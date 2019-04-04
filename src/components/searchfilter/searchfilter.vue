@@ -49,10 +49,10 @@
             </el-radio-group>
           </div>
         </el-row> -->
-<!----------------------------------------------工作性质--------------------------------------------------->        
+<!----------------------------------------------工作经验--------------------------------------------------->        
         <el-row class="searchfilter-row">
           <div class="searchfilter-row-normol">
-            <strong>工作性质:</strong>
+            <strong>工作经验:</strong>
           </div>
           <div class="searchfilter-row-detail">
             <el-checkbox v-model="uncheckAll" @change="handleUncheckAllChange">不限</el-checkbox>
@@ -172,7 +172,7 @@ export default {
 
       uncheckAll: true,
       checkedJobNature: [],
-      jobNature: ['实习', '全职', '兼职'],
+      jobNature: ['应届生', '1-3年', '3-5年', '5-10年', '10年以上'],
       
       uncheckAllEdu:true,
       checkedEducationBg:[],
@@ -180,7 +180,7 @@ export default {
 
       uncheckAllStage: true,
       checkedFinancingStage:[],
-      financingStage: [ '未融资', '融资中', '上市公司'],
+      financingStage: [ '未融资', '天使轮', 'A轮', 'B轮', 'C轮', 'D轮', 'D轮及以上', '上市公司', '不需要融资'],
 
       uncheckAllSize: true,
       checkedCompanySize:[],
@@ -204,19 +204,19 @@ export default {
         },
         {
           value: "选项3",
-          label: "3k-7k"
+          label: "3k-5k"
         },
         {
           value: "选项4",
-          label: "7k-15k"
+          label: "5k-10k"
         },
         {
           value: "选项5",
-          label: "15k-25k"
+          label: "10k-20k"
         },
         {
           value: "选项6",
-          label: "25k-50k"
+          label: "20k-50k"
         },
         {
           value: "选项7",
@@ -505,7 +505,7 @@ export default {
 }
 
 #searchfilter-main {
-  width: 960px;
+  width: 1080px;
   float: left;
   padding: 6px 16px;
   position: relative;
@@ -518,7 +518,7 @@ export default {
 .searchfilter-footer {
   position: relative;
   margin-top: 16px;
-  width: 960px;
+  width: 1080px;
   height: 50px !important;
   float: left;
   padding: 6px 16px;
@@ -530,7 +530,7 @@ export default {
 .searchfilter-header{
   position: relative;
   margin-top: 16px;
-  width: 960px;
+  width: 1080px;
   height: 50px !important;
   float: left;
   margin-bottom: 16px;

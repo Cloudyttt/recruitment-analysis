@@ -6,11 +6,6 @@
                     <el-col :span="4"  id="jobs-num">
                         <el-tag>职位 {{jobsNum}} 个</el-tag>
                     </el-col>
-<!--                     <el-col :span="4"></el-col>
-                    <el-col :span="4"></el-col>
-                    <el-col :span="4"></el-col>
-                    <el-col :span="4"></el-col>
-                    <el-col :span="4"></el-col> -->
                 </el-row>
           </el-header>
           <el-main id="worksearch-main">
@@ -25,7 +20,7 @@
                     @select="handleSelect"
                     size="medium"
                     ></el-autocomplete>
-                    <el-button type="primary" icon="el-icon-search" id="search-button">搜索</el-button>
+                    <el-button type="primary" icon="el-icon-search" id="search-button" @click="search">搜索</el-button>
                 </el-col>
             </el-row>
           </el-main>

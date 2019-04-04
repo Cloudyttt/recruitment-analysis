@@ -27,8 +27,8 @@
             <el-col :span="8" id="header-manage">
                 <el-breadcrumb separator="/">
                 <el-breadcrumb-item><a href="/">投递箱</a></el-breadcrumb-item>
-                <!-- <el-breadcrumb-item><a href="/">我的收藏</a></el-breadcrumb-item> -->
-                <el-breadcrumb-item :to="{ path: '../register/register.vue' }">注册</el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/">我的收藏</a></el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/register' }">注册</el-breadcrumb-item>
                 <el-breadcrumb-item>
                     <el-dropdown size="small" type="primary">
                         <span class="el-dropdown-link">
@@ -49,6 +49,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import Register from "../register/register";
+import Login from "../login/login";
 export default {
     data() {
         return {
@@ -56,6 +58,10 @@ export default {
             activeIndex: '1',
             activeIndex2: '1'
         };
+    },
+    components: {
+        "v-register": Register,
+        "v-login": Login,
     },
     methods: {
       handleSelect(key, keyPath) {
