@@ -24,7 +24,7 @@
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-              <el-button type="primary">登录</el-button>
+              <el-button type="primary" @click="userLogin">登录</el-button>
             </div>
           </el-col>
         </el-row>
@@ -48,12 +48,22 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import axios from 'axios';
 export default {
   data() {
     return {
       input: ""
     };
-  }
+  },
+  methods: {
+		userLogin(){
+      axios.get('http://localhost:3000/users/login/')
+        .then(res => {
+          console.log('数据获取成功')
+          console.log(res.data)
+        })
+    }
+  },
 };
 </script>
 
@@ -62,7 +72,9 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
-
+.login{
+  margin-top: 20px;
+}
 .el-main {
   display: flex;
   flex-direction: column;

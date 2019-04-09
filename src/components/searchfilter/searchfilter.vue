@@ -41,7 +41,6 @@
             </el-radio-group>
           </div>
         </el-row-->
-        >
         <!-----------------------------------------------工作经验---------------------------------------------------->
         <el-row class="searchfilter-row">
           <div class="searchfilter-row-normol">
@@ -118,6 +117,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+const axios = require('axios')
+const cheerio = require('cheerio')
 import filtertitle from "./filtertitle";
 export default {
   data() {
@@ -494,6 +495,7 @@ export default {
       console.log(this.timeCode);
       this.productWebsite();
     },
+    // 实时自动生成相应页面地址
     productWebsite() {
       this.finalWebsite =
         this.website +
@@ -513,6 +515,11 @@ export default {
         /* console.log("替换后" + this.finalWebsite); */
       }
       console.log('网址:' + this.finalWebsite);
+      axios.get('http://localhost:3000/?spiderUrl=' + this.finalWebsite)
+        .then(res => {
+          console.log('数据获取成功')
+          console.log(res.data)
+        })
     }
   }
 };

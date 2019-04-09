@@ -1,31 +1,31 @@
 <template>
-  <div class="register">
+  <div class="accountmanage">
     <el-container>
       <el-header>
-        <h1>用户注册</h1>
+        <h1>个人信息修改</h1>
       </el-header>
       <el-main>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-              <h4>用户名</h4>
-              <el-input v-model="input" placeholder="请输入用户名"></el-input>
+              <h4>新用户名</h4>
+              <el-input v-model="input" placeholder="请输入新用户名"></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-              <h4>手机号</h4>
-              <el-input v-model="input" placeholder="请输入手机号码"></el-input>
+              <h4>旧密码</h4>
+              <el-input v-model="input" placeholder="请输入旧密码"></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-              <h4>密码</h4>
-              <el-input v-model="input" placeholder="请输入密码"></el-input>
+              <h4>新密码</h4>
+              <el-input v-model="input" placeholder="请输入登录密码"></el-input>
             </div>
           </el-col>
         </el-row>
@@ -33,25 +33,30 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
               <h4>确认密码</h4>
-              <el-input v-model="input" placeholder="请再次输入密码"></el-input>
+              <el-input v-model="input" placeholder="请再次输入登录密码"></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-              <el-button type="primary" @click='userRegister'>注册</el-button>
+              <el-button type="primary" @click="userAlert()">确认修改</el-button>
             </div>
           </el-col>
         </el-row>
         <el-row class="login-others">
-          <el-col :span="6" :offset="18">
-            <div class="grid-content bg-purple-dark">
+<!--           <el-col :span="6" :offset="18">
+            <div class="grid-content bg-purple-dark noaccount">
               <el-tag type="info" size="mini">
-                <router-link to="/login">已有账号？</router-link>
+                <router-link to="/register">没有账号？</router-link>
               </el-tag>
             </div>
-          </el-col>
+          </el-col> -->
+<!--           <el-col :span="6">
+							<div class="grid-content bg-purple-dark">
+								 <el-tag type="warning" size="mini">忘记密码？</el-tag>
+							</div>
+          </el-col> -->
         </el-row>
       </el-main>
       <el-footer></el-footer>
@@ -61,22 +66,20 @@
 <script type="text/ecmascript-6">
 import axios from 'axios';
 export default {
-
   data() {
     return {
-      input: "",
-      radio: "1"
+      input: ""
     };
-	},
-	methods: {
-		userRegister(){
-      axios.get('http://localhost:3000/users/register/')
+  },
+  methods: {
+		userAlert(){
+      axios.get('http://localhost:3000/users/alert/')
         .then(res => {
           console.log('数据获取成功')
           console.log(res.data)
         })
     }
-	},
+  },
 };
 </script>
 
@@ -85,11 +88,9 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
-
-.register {
+.accountmanage{
   margin-top: 20px;
 }
-
 .el-main {
   display: flex;
   flex-direction: column;
@@ -122,18 +123,9 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 20px;
     width: 100%;
   }
-
-  .send-message {
-    margin-top: 0;
-  }
-
-  .sex {
-    .el-col {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin-top: 5px;
-    }
-  }
+	.noaccount{
+		display flex
+		justify-content flex-end
+	}
 }
 </style>

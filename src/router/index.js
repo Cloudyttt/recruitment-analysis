@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import register from '../components/register/register'
 import login from '../components/login/login'
+import accountmanage from '../components/accountmanage/accountmanage'
 import mainpage from '../components/mainpage/mainpage'
 import bestrecommend from '../components/recommend/bestrecommend'
 import hotrecommend from '../components/recommend/hotrecommend'
 import lastestrecommend from '../components/recommend/lastestrecommend'
-
+import collection from '../components/collection/collection'
 Vue.use(Router)
 
 export default new Router({
@@ -34,9 +35,19 @@ export default new Router({
       ]
     },
     {
+      path: '/accountmanage',
+      name: 'accountmanage',
+      component: accountmanage
+    },
+    {
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/collection',
+      name: 'collection',
+      component: collection
     },
     {
       path: '/register',

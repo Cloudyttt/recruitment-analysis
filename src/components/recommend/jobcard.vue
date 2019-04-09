@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <el-container>
           <el-header class="card-header">
-            <span class="companytitle">{{jobName}}</span>
+            <span class="companytitle">{{jobName}} <el-button type="warning" icon="el-icon-star-off" size="mini" circle></el-button></span>
             <span class="salarytitle">{{salaryRange}}</span>
           </el-header>
           <el-main class="card-main">

@@ -26,8 +26,8 @@
 
             <el-col :span="8" id="header-manage">
                 <el-breadcrumb separator="/">
-                <el-breadcrumb-item><a href="/">投递箱</a></el-breadcrumb-item>
-                <el-breadcrumb-item><a href="/">我的收藏</a></el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/accountmanage' }">账号设置</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/collection' }">我的收藏</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/register' }">注册</el-breadcrumb-item>
                 <el-breadcrumb-item>
                     <el-dropdown size="small" type="primary">
@@ -36,8 +36,8 @@
                         </span>
                         <el-dropdown-menu slot="dropdown" id=“header-el-dropdown-menu”>
                             <el-dropdown-item icon="el-icon-bell" divided>我的消息</el-dropdown-item>
-                            <el-dropdown-item icon="el-icon-edit" divided>账号设置</el-dropdown-item>
-                            <el-dropdown-item icon="el-icon-circle-check" divided>职位推荐</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-edit" :to="{ path: '/accountmanage' }" divided>账号设置</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-circle-check" to="/accountmanage" divided>职位推荐</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-star-on" divided>我的标签</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-back" divided>退出登录</el-dropdown-item>
                         </el-dropdown-menu>
