@@ -9,14 +9,24 @@
 </template>
 <script type="text/ecmascript-6">
 import jobcard from './jobcard';
+import { EventBus } from "../eventBus/EventBus.js"
 export default {
   data() {
     return {
+			jobsinfo: '',
       currentDate: new Date()
     };
 	},
 	components: {
 		'v-jobcard': jobcard
+	},
+	mounted() {
+		EventBus.$on("searchingresult", ({ jobsinfo}) => {
+			this.jobsinfo = jobsinfo
+			console.log('jobsinfo in bestrecommend: ')
+			console.log(jobsinfo)
+			console.log(jobsinfo[0].job.jobTitle)
+    });
 	}
 };
 </script>

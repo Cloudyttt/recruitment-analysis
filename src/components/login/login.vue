@@ -9,7 +9,7 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
               <h4>手机</h4>
-              <el-input v-model="input" placeholder="请输入手机号"></el-input>
+              <el-input v-model="telephone" name="telephone" placeholder="请输入手机号"></el-input>
             </div>
           </el-col>
         </el-row>
@@ -17,7 +17,7 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
               <h4>密码</h4>
-              <el-input v-model="input" placeholder="请输入登录密码"></el-input>
+              <el-input v-model="password" placeholder="请输入登录密码" type="password" name="password"></el-input>
             </div>
           </el-col>
         </el-row>
@@ -52,16 +52,42 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      input: ""
+      telephone: '',
+      password:''
     };
   },
   methods: {
+    loginSuccess() {
+      this.$notify.success({
+        title: '提示',
+        message: '恭喜，登录成功！',
+        showClose: false
+      });
+    },
+    loginFail() {
+      this.$notify.error({
+        title: '错误',
+        message: '登录失败'
+      });
+    },
 		userLogin(){
-      axios.get('http://localhost:3000/users/login/')
-        .then(res => {
+      axios.get('http://localhost:3000/users/login/', {
+      params: {
+          telephone: this.telephone,
+          password: this.password
+      }
+      }).then(res => {
           console.log('数据获取成功')
           console.log(res.data)
-        })
+          console.log('res.data.length: ' + res.data.length)
+          if(res.data.length === 1){
+            this.loginSuccess()
+          } else {
+            this.loginFail()
+          }
+      }).catch(function(error){
+        console.log(error)
+      })
     }
   },
 };

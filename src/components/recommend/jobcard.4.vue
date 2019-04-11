@@ -6,7 +6,7 @@
           <el-header class="card-header">
             <span class="companytitle">{{jobName}} <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button></span>
             <span class="salarytitle">{{salaryRange}}</span>
-            <div>收藏数: <strong class="collect">5</strong></div>
+            <div>收藏数: <strong class="collect">14</strong></div>
           </el-header>
           <el-main class="card-main">
             {{expRequest }} / {{ eduRequest}}
@@ -17,7 +17,7 @@
         </el-container>
       </div>
       <div class="text item camp">
-        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20181108/142246d21e8f604c4c48950159ee42a1cfcd208495d565ef66e7dff9f98764da.jpg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
+        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/logo/24e256703824374872e43f68de4ef1b3be1bd4a3bd2a63f070bdbdada9aad826.jpg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
         <div class="camp-detail">
           <div class="camp-detail-name">{{companyName}}</div>
           <div>{{field}} / {{financialStage}} / {{cmplocation}}</div>
@@ -30,20 +30,23 @@
 export default {
 	data(){
 		return{
-      jobName: 'Web前端开发工程师',
-      companyName: '吉磊控股',
-      salaryRange: '8k-15k',
-      expRequest: '3-5年',
+      jobName: 'java工程师',
+      companyName: '安恒信息',
+      salaryRange: '7k-15k',
+      expRequest: '不限',
       eduRequest: '本科',
-      jobFeature: '弹性工作，免费三餐，租房补贴，扁平管理，职业大牛，团队氛围好',
-      field: '其他行业',
-      financialStage: '未融资',
-      cmplocation: '杭州滨江区'
+      jobFeature: '负责安全服务项目实施工作，安全服务项目包含渗透测试、安全咨询、代码审计、应急响应等',
+      field: '信息安全',
+      financialStage: 'D轮及以上',
+      cmplocation: '浙江 杭州'
 		}
 	}
 };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+.collect{
+  color red
+}
 .companytitle{
   font-size 16px!important
 }

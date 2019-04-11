@@ -6,7 +6,7 @@
           <el-header class="card-header">
             <span class="companytitle">{{jobName}} <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button></span>
             <span class="salarytitle">{{salaryRange}}</span>
-            <div>收藏数: <strong class="collect">5</strong></div>
+            <div>收藏数: <strong class="collect">3</strong></div>
           </el-header>
           <el-main class="card-main">
             {{expRequest }} / {{ eduRequest}}
@@ -17,7 +17,7 @@
         </el-container>
       </div>
       <div class="text item camp">
-        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20181108/142246d21e8f604c4c48950159ee42a1cfcd208495d565ef66e7dff9f98764da.jpg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
+        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/d96a109d1dde9b69e8994669ed3b714f-be57f160099fa6f403d43cPnUAcH.jpeg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
         <div class="camp-detail">
           <div class="camp-detail-name">{{companyName}}</div>
           <div>{{field}} / {{financialStage}} / {{cmplocation}}</div>
@@ -30,15 +30,15 @@
 export default {
 	data(){
 		return{
-      jobName: 'Web前端开发工程师',
-      companyName: '吉磊控股',
-      salaryRange: '8k-15k',
-      expRequest: '3-5年',
+      jobName: 'C语音试工程师',
+      companyName: '中软国际',
+      salaryRange: '10k-25k',
+      expRequest: '5年以上',
       eduRequest: '本科',
-      jobFeature: '弹性工作，免费三餐，租房补贴，扁平管理，职业大牛，团队氛围好',
-      field: '其他行业',
-      financialStage: '未融资',
-      cmplocation: '杭州滨江区'
+      jobFeature: '美女如云 领导nice 扁平管理 互联网金融 公司氛围好',
+      field: '互联网金融',
+      financialStage: '不需要融资上',
+      cmplocation: '浙江 杭州'
 		}
 	}
 };

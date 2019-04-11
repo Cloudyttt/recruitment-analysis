@@ -4,9 +4,9 @@
       <div slot="header" class="clearfix">
         <el-container>
           <el-header class="card-header">
-            <span class="companytitle">{{jobName}} <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button></span>
+            <span class="companytitle">{{jobName}} <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="open2"></el-button></span>
             <span class="salarytitle">{{salaryRange}}</span>
-            <div>收藏数: <strong class="collect">5</strong></div>
+            <div>收藏数: <strong class="collect">34</strong></div>
           </el-header>
           <el-main class="card-main">
             {{expRequest }} / {{ eduRequest}}
@@ -17,7 +17,7 @@
         </el-container>
       </div>
       <div class="text item camp">
-        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20181108/142246d21e8f604c4c48950159ee42a1cfcd208495d565ef66e7dff9f98764da.jpg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
+        <div class="camp-campicon"><img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20170808/8a08ab6a8ceec3b1b3362815c59d4249c110f7482f96b29925f2a79edd8d271b.jpg?x-oss-process=image/resize,w_120,limit_0" height="40" width="40"></div>
         <div class="camp-detail">
           <div class="camp-detail-name">{{companyName}}</div>
           <div>{{field}} / {{financialStage}} / {{cmplocation}}</div>
@@ -30,20 +30,39 @@
 export default {
 	data(){
 		return{
-      jobName: 'Web前端开发工程师',
-      companyName: '吉磊控股',
-      salaryRange: '8k-15k',
-      expRequest: '3-5年',
+      jobName: 'PHP程序员',
+      companyName: '游侠科技',
+      salaryRange: '5k-10k',
+      expRequest: '1-3年',
       eduRequest: '本科',
-      jobFeature: '弹性工作，免费三餐，租房补贴，扁平管理，职业大牛，团队氛围好',
-      field: '其他行业',
+      jobFeature: '在业界以及游戏爱好者群体中影响深远，在国内单机游戏网站中屈指可数',
+      field: '游戏',
       financialStage: '未融资',
-      cmplocation: '杭州滨江区'
+      cmplocation: '杭州市 拱墅区'
 		}
-	}
+  },
+  methods: {
+      open2() {
+        this.$confirm('将从收藏夹中删除该岗位, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      }
+    }
 };
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
 .companytitle{
   font-size 16px!important
 }

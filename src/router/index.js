@@ -8,6 +8,7 @@ import bestrecommend from '../components/recommend/bestrecommend'
 import hotrecommend from '../components/recommend/hotrecommend'
 import lastestrecommend from '../components/recommend/lastestrecommend'
 import collection from '../components/collection/collection'
+import ReceiveCount from '../components/eventBus/ReceiveCount'
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +39,11 @@ export default new Router({
       path: '/accountmanage',
       name: 'accountmanage',
       component: accountmanage
+    },
+    {
+      path: '/ReceiveCount',
+      name: 'ReceiveCount',
+      component: ReceiveCount
     },
     {
       path: '/login',

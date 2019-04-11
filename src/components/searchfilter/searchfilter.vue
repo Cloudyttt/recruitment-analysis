@@ -119,10 +119,13 @@
 <script type="text/ecmascript-6">
 const axios = require('axios')
 const cheerio = require('cheerio')
-import filtertitle from "./filtertitle";
+import { EventBus } from "../eventBus/EventBus.js"
+import filtertitle from "./filtertitle"
 export default {
   data() {
     return {
+      searchingjob: '',
+      jobsinfo: '',
       website: "https://www.zhipin.com/",
       finalWebsite: "",
       tempWebsite:
@@ -507,7 +510,8 @@ export default {
         this.compSizeCode +
         this.finanCode +
         this.locCode +
-        "/?query=php" +
+        "/?query=" +
+        this.searchingjob
         this.timeCode;
       while (this.finalWebsite.indexOf("/-") != -1) {
         /* console.log("替换前" + this.finalWebsite); */
@@ -515,12 +519,22 @@ export default {
         /* console.log("替换后" + this.finalWebsite); */
       }
       console.log('网址:' + this.finalWebsite);
+      // axios向后端发送前端动态生成的页面网址，同时获取后端传回来的岗位信息数据和公司信息数据
       axios.get('http://localhost:3000/?spiderUrl=' + this.finalWebsite)
         .then(res => {
           console.log('数据获取成功')
           console.log(res.data)
+          this.jobsinfo = res.data.jobsArray
+          EventBus.$emit("searchingresult", {
+            jobsinfo: this.jobsinfo
+          });
         })
     }
+  },
+  mounted() {
+    EventBus.$on("searchedjob", ({ searchingjob}) => {
+      this.searchingjob = searchingjob
+    });
   }
 };
 </script>
