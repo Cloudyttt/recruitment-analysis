@@ -42,14 +42,19 @@
             <el-col :span="24">
               <div class="grid-content bg-purple-dark">
                 <h4>确认密码</h4>
-                <el-input v-model="confirmPassword" placeholder="请再次输入密码" type="password" name="confirmpassword"></el-input>
+                <el-input
+                  v-model="confirmPassword"
+                  placeholder="请再次输入密码"
+                  type="password"
+                  name="confirmpassword"
+                ></el-input>
               </div>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="24">
               <div class="grid-content bg-purple-dark">
-                <el-button type="primary" native-type="submit" value="Submit">注册</el-button>
+                <el-button type="primary" @click='userRegister'>注册</el-button>
               </div>
             </el-col>
           </el-row>
@@ -69,28 +74,91 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import axios from 'axios';
+import axios from "axios";
 export default {
-
   data() {
     return {
       telephone: '',
       email: '',
       username: '',
       password: '',
-      status: 1,
+      status: 0,
       confirmPassword: ''
     };
-	},
-	methods: {
-		userRegister(){
-      axios.get('http://localhost:3000/users/register/')
-        .then(res => {
-          console.log('数据获取成功')
-          console.log(res.data)
-        })
-    }
-	},
+  },
+  methods: {
+    userRegister() {
+      if (this.telephone !== '' && this.email !== '' && this.username !== '' && this.password !== '' && this.confirmPassword !== '' && this.password === this.confirmPassword) {
+        // 确保注册密码输入无误
+        axios
+          .get("http://localhost:3000/users/register/", {
+            params: {
+              telephone: this.telephone,
+              email: this.email,
+              username: this.username,
+              password: this.password,
+              status: this.status
+            }
+          })
+          .then(res => {
+            console.log("数据获取成功");
+            console.log(res.data);
+            if(res.data === 'succeed'){
+              this.open3()
+            } else{
+              this.open4()
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else if(this.telephone === '' || this.email === '' || this.username === '' || this.password === '' || this.confirmPassword === '' ) {// 确保注册信息完整
+        this.open2()
+      } else if(this.password !== this.confirmPassword){  //  确保两次注册密码输入一致
+        this.open1()
+      } 
+    },
+    open1() {
+        this.$alert('密码输入不一致', '注册失败', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      },
+      open2() {
+        this.$alert('休息填写不全', '注册失败', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      },
+      open3() {
+        this.$notify({
+          title: '恭喜',
+          message: '账号注册成功！',
+          type: 'success'
+        });
+      },
+      open4() {
+        this.$alert('账号已存在，请勿重复注册', '注册失败', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      }
+  }
 };
 </script>
 
@@ -99,14 +167,16 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
-form{
-  width 100%
+
+form {
+  width: 100%;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .register {
   margin-top: 20px;
 }

@@ -1,47 +1,44 @@
+/* eslint-disable no-unused-vars */
 const mysql = require('mysql')
-const pool = mysql.createPool({
-  host: '172.0.0.1',
+const express = require('express')
+const router = express.Router()
+// 数据库连接
+const connection = mysql.createConnection({
+  host: 'localhost',
   user: 'root',
-  password: 'cloudy2020',
+  password: '12345678',
   database: 'mydb',
-  port: 3306
+  port: '3306'
 })
-
-function query (sql, callback, options) {
-  pool.getConnection(function (err, conn) {
-    if (err) {
-      callback(err, null, null)
-    } else {
-      conn.query(sql, options, function (err, results, fields) {
-        if (err) throw err
-        conn.release()
-        callback(err, results, fields)
+function handleError (err) {
+  if (err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') { // 如果是连接断开，自动重新连接
+      connect()
+    } else if (err.code === 'PROTOCOL_ENQUEUE_HANDSHAKE_TWICE') { // 已经连接数据库时断开重连
+      connection.end(function (err) {
+        if (err) {
+          console.log('---:' + err)
+          return
+        }
+        console.log('关闭succeed')
       })
+    } else {
+      console.error(err.stack || err)
     }
-  })
-};
-
-function promiseQuery (sql) {
-  return new Promise(function (resolve, reject) {
-    pool.getConnection(function (err, conn) {
-      if (err) {
-        reject(err)
-      } else {
-        conn.query(sql, function (err, rows, fields) {
-          // 释放连接
-          conn.release()
-          // 传递Promise回调对象
-          resolve({
-            'err': err,
-            'rows': rows,
-            'fields': fields
-          })
-        })
-      }
-    })
-  })
+  } else {
+    console.log('connecting succeed!')
+  }
 }
+
+// 连接数据库
+function connect () {
+  var db = connection
+  db.connect(handleError)
+  db.on('error', handleError)
+}
+
 module.exports = {
-  query: query,
-  promiseQuery: promiseQuery
+  connect: connect,
+  handleError: handleError,
+  connection: connection
 }

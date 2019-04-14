@@ -49,6 +49,7 @@
 </template>
 <script type="text/ecmascript-6">
 import axios from 'axios';
+import { EventBus } from "../eventBus/EventBus.js"
 export default {
   data() {
     return {
@@ -61,7 +62,7 @@ export default {
       this.$notify.success({
         title: '提示',
         message: '恭喜，登录成功！',
-        showClose: false
+        showClose: true
       });
     },
     loginFail() {
@@ -71,24 +72,48 @@ export default {
       });
     },
 		userLogin(){
-      axios.get('http://localhost:3000/users/login/', {
-      params: {
-          telephone: this.telephone,
-          password: this.password
-      }
-      }).then(res => {
-          console.log('数据获取成功')
-          console.log(res.data)
-          console.log('res.data.length: ' + res.data.length)
-          if(res.data.length === 1){
-            this.loginSuccess()
-          } else {
-            this.loginFail()
+      if(this.telephone === '' || this.password === ''){
+        this.open()
+      }else{
+        axios.get('http://localhost:3000/users/login/', {
+          params: {
+              telephone: this.telephone,
+              password: this.password
           }
-      }).catch(function(error){
-        console.log(error)
-      })
-    }
+          }).then(res => {
+              console.log('数据获取成功')
+              console.log(res.data)
+              console.log('登录用户的用户名：')
+              console.log(res.data[0].username)
+              console.log('登录用户的手机号：')
+              console.log(res.data[0].telephone)
+              /* console.log('res.data.length: ' + res.data.length) */
+              if(res.data.length === 1){ // 登录成功
+                this.loginSuccess()
+                EventBus.$emit("loginsucceed", {
+                  username: res.data[0].username,
+                  telephone: res.data[0].telephone,
+                  status: 1
+                });
+              } else {
+                this.loginFail()
+              }
+          }).catch(function(error){
+            console.log(error)
+          })
+      }
+    },
+    open() {
+        this.$alert('请同时输入手机号和密码！', '登录失败', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      }
   },
 };
 </script>

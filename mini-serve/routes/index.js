@@ -11,7 +11,6 @@ var router = express.Router()
 router.get('/', async function(req, res, next) {
   console.log(req.query.spiderUrl)
   var jobsArray = new Array()
-  var jobsArray2 = new Array()
   var spiderUrl = encodeURI(req.query.spiderUrl)
   console.log('前端请求爬取的网址: ' + spiderUrl)
   const urlHear = 'https://www.zhipin.com'
@@ -28,6 +27,7 @@ router.get('/', async function(req, res, next) {
         let joburl = $(el).find('a').attr('href')
         let jobDetail = $(el).find('.info-primary').find('p').text()
         let companytitle = $(el).find('.info-company').find('h3').text()
+        let jobpublishtime = $(el).find('.info-publis').find('p').text()
         let companyUrl = $(el).find('h3').find('a').attr('href')
         let companyDetail = $(el).find('.company-text').find('p').text()
         if (jobDetail.includes('1-3年')) {
@@ -48,14 +48,23 @@ router.get('/', async function(req, res, next) {
           job.jobEdu = jobDetail.split('10年以上')[1]
         } else if (jobDetail.includes('不限')) {
           job.jobLocation = jobDetail.split('不限')[0]
-          job.jobExp = '不限'
+          job.jobExp = '经验不限'
           job.jobEdu = jobDetail.split('10年以上')[1]
+        } else if (jobDetail.includes('经验不限')) {
+          job.jobLocation = jobDetail.split('经验不限')[0]
+          job.jobExp = '经验不限'
+          job.jobEdu = jobDetail.split('经验不限')[1]
+        } else if (jobDetail.includes('应届生')) {
+          job.jobLocation = jobDetail.split('应届生')[0]
+          job.jobExp = '应届生'
+          job.jobEdu = jobDetail.split('应届生')[1]
         }
         job.jobTitle = jobtitle
         job.jobsalary = jobsalary
         job.joburl = urlHear.concat(joburl)
         job.jobDetail = jobDetail
         job.companyTitle = companytitle
+        job.jobPublishTime = jobpublishtime
         // 公司信息
         if (companyDetail.includes('未融资')) {
           company.companyField = companyDetail.split('未融资')[0]
@@ -93,6 +102,20 @@ router.get('/', async function(req, res, next) {
         company.companyTitle = companytitle
         company.companyUrl = urlHear.concat(companyUrl)
         company.companyDetail = companyDetail
+        // 爬取公司图标
+        axios({ method: 'get', url: company.companyUrl })
+          .then(function(res) {
+            const $ = cheerio.load(res.data)
+            $('.company-banner .info-primary').each((index, el) => {
+              console.log('！！！公司图标资源定位$：' + $)
+              let companyiconUrl = $(el).attr('href')
+              console.log('！！！公司图标资源定位：' + companyiconUrl)
+            })
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+        console.log('发布时间： ' + job.jobPublishTime)
         /* console.log('index: ' + index)
         console.log('工作名称: ' + job.jobTitle)
         console.log('薪资: ' + job.jobsalary)

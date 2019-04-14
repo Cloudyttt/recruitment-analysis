@@ -124,6 +124,7 @@ import filtertitle from "./filtertitle"
 export default {
   data() {
     return {
+      dataAvailable: false,
       searchingjob: '',
       jobsinfo: '',
       website: "https://www.zhipin.com/",
@@ -511,7 +512,7 @@ export default {
         this.finanCode +
         this.locCode +
         "/?query=" +
-        this.searchingjob
+        this.searchingjob +
         this.timeCode;
       while (this.finalWebsite.indexOf("/-") != -1) {
         /* console.log("替换前" + this.finalWebsite); */
@@ -522,18 +523,44 @@ export default {
       // axios向后端发送前端动态生成的页面网址，同时获取后端传回来的岗位信息数据和公司信息数据
       axios.get('http://localhost:3000/?spiderUrl=' + this.finalWebsite)
         .then(res => {
-          console.log('数据获取成功')
+          console.log('后端传回数据成功:')
           console.log(res.data)
           this.jobsinfo = res.data.jobsArray
-          EventBus.$emit("searchingresult", {
-            jobsinfo: this.jobsinfo
-          });
+          if(this.jobsinfo.length !== 0){
+            EventBus.$emit("searchingresult", {
+              jobsinfo: this.jobsinfo,
+              dataAvailable: true
+            });
+          } else {
+            EventBus.$emit("searchingresult", {
+              jobsinfo: this.jobsinfo,
+              dataAvailable: false
+            });
+          }
         })
     }
   },
   mounted() {
     EventBus.$on("searchedjob", ({ searchingjob}) => {
       this.searchingjob = searchingjob
+      this.jobExp = "不限",
+      this.eduBg = "不限",
+      this.finanStage = "不限",
+      this.compSize = "不限",
+      this.field = "不限",
+      this.time = "不限",
+      this.salary = "不限",
+      this.location = "不限",
+
+      this.locCode = "",
+      this.expCode = "",
+      this.eduBgCode = "",
+      this.finanCode = "",
+      this.compSizeCode = "",
+      this.fieldCode = "",
+      this.salaryCode = "",
+      this.timeCode = ""
+      this.productWebsite()
     });
   }
 };

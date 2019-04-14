@@ -1,12 +1,16 @@
 <template>
   <div class="v-header">
     <div class="header-left">
-      <router-link to="/mainpage"><div class="header-left-logo">
-        <img src="/static/logo/logo-like.png" height="30" width="30">
-        <strong>云鱼</strong>
-      </div></router-link>
+      <router-link to="/mainpage">
+        <div class="header-left-logo">
+          <img src="/static/logo/logo-like.png" height="30" width="30">
+          <strong>云鱼</strong>
+        </div>
+      </router-link>
       <div id="header-location">
-        <strong id="header-location-current"><router-link to="/mainpage">杭州站</router-link></strong>
+        <strong id="header-location-current">
+          <router-link to="/mainpage">杭州站</router-link>
+        </strong>
       </div>
     </div>
     <div class="header-menu">
@@ -20,23 +24,33 @@
         text-color="#ff00ff"
         active-text-color="#ccc"
       >
-        <el-menu-item index="collection" route="/collection"><i class="el-icon-star-on">收藏</i></el-menu-item>
-        <el-menu-item index="accountmanage" route="/accountmanage"><i class="el-icon-setting">设置</i></el-menu-item>
-        <el-menu-item index="register" route="/register"><i class="el-icon-edit">注册</i></el-menu-item>
-        <el-menu-item v-if="!isLogined" index="login" route="/login"><i class="el-icon-mobile-phone">登录</i></el-menu-item>
-        <el-dropdown v-if="isLogined" size="small" type="primary">
-              <span class="el-dropdown-link">
-                {{username}}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown" id="header-el-dropdown-menu">
-                <el-dropdown-item icon="el-icon-bell" divided>我的消息</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-edit" :to="{ path: '/accountmanage' }" divided>账号设置</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-check" to="/accountmanage" divided>职位推荐</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-star-on" divided>我的标签</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-back" divided>退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+        <el-menu-item index="collection" route="/collection">
+          <i class="el-icon-star-on">收藏</i>
+        </el-menu-item>
+        <el-menu-item index="accountmanage" route="/accountmanage">
+          <i class="el-icon-setting">设置</i>
+        </el-menu-item>
+        <el-menu-item index="register" route="/register">
+          <i class="el-icon-edit">注册</i>
+        </el-menu-item>
+        <el-menu-item v-if="!isLogined" index="login" route="/login">
+          <i class="el-icon-mobile-phone">登录</i>
+        </el-menu-item>
+        <el-menu-item>
+          <el-dropdown v-if="isLogined" size="small" type="primary">
+            <span class="el-dropdown-link">
+              {{username}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" id="header-el-dropdown-menu">
+              <el-dropdown-item icon="el-icon-bell" divided><el-button class="mybutton" size="mini" >我的消息</el-button></el-dropdown-item>
+              <el-dropdown-item icon="el-icon-edit" :to="{ path: '/accountmanage' }" ><el-button class="mybutton" size="mini" >账号设置</el-button></el-dropdown-item>
+              <el-dropdown-item icon="el-icon-circle-check" to="/accountmanage" ><el-button class="mybutton" size="mini" >职位推荐</el-button></el-dropdown-item>
+              <el-dropdown-item icon="el-icon-star-on" ><el-button class="mybutton" size="mini" >我的标签</el-button></el-dropdown-item>
+              <el-dropdown-item icon="el-icon-back"><el-button class="mybutton" size="mini" @click="loginout">退出登录</el-button></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-menu-item>
       </el-menu>
     </div>
   </div>
@@ -45,6 +59,7 @@
 import Register from "../register/register";
 import Login from "../login/login";
 import { EventBus } from "../eventBus/EventBus.js";
+import { constants } from "crypto";
 export default {
   data() {
     return {
@@ -59,17 +74,40 @@ export default {
   },
   watch: {
     isLogined: function() {
-      if (isLogined === false) {
+      if (this.isLogined === false) {
         this.username = "登录";
-      } else {
-        this.username = "俞浩天";
       }
     }
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    loginout() {
+      console.log("Login out");
+      EventBus.$emit("loginout", {
+        status: 0
+      });
     }
+  },
+  mounted() {
+    EventBus.$on("loginsucceed", ({ username, telephone, status }) => {
+      console.log(username);
+      console.log(telephone);
+      console.log(status);
+      if (status === 1) {
+        this.isLogined = true;
+        this.username = username;
+        console.log("用户名：");
+        console.log(username);
+      }
+    });
+    EventBus.$on("loginout", ({ status }) => {
+      console.log(status);
+      if (status === 0) {
+        this.isLogined = false;
+      }
+    });
   }
 };
 </script>
@@ -130,7 +168,9 @@ input, select {
 }
   zoom: 1; /* IE/7/6 */
 }
-
+.mybutton{
+  border none 
+}
 .header-left {
   margin-left: 40px;
   border-radius: 4px;
@@ -229,15 +269,16 @@ input, select {
 #header-el-dropdown-menu {
   font-size: 10px;
 }
-.el-menu--horizontal>.el-menu-item{
-    width 60px
-    display flex
-    align-items center
-    color: #2c3e50!important
-    margin-right 20px
 
+.el-menu--horizontal>.el-menu-item {
+  width: 60px;
+  display: flex;
+  align-items: center;
+  color: #2c3e50 !important;
+  margin-right: 20px;
 }
-.el-menu-item [class^=el-icon-]{
-    font-size 16px
+
+.el-menu-item [class^=el-icon-] {
+  font-size: 16px;
 }
 </style>

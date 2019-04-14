@@ -2,7 +2,7 @@
   <div class="hotrecommend">
 		<el-row v-for="i in 3" v-bind:key="i">
 			<el-col v-bind:span="8" v-for="j in 3" v-bind:key="j">
-				<v-jobcard></v-jobcard>
+				<!-- <v-jobcard></v-jobcard> -->
 			</el-col>
 		</el-row>
   </div>
