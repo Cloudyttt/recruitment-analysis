@@ -229,7 +229,7 @@ export default {
         "临安市",
         "建德市"
       ],
-      salaryRange: [ "不限", "3k以下", "3k-5k", "5k-10k", "10k-20k", "20k-50k", "50k以上" ],
+      salaryRange: [ "不限", "3k以下", "3k-5k", "5k-10k", "10k-20k", "20k-30k", "30k-50k", "50k以上" ],
       industryField: [
         "不限",
         "电子商务",
@@ -452,18 +452,21 @@ export default {
         this.salaryCode = "";
       } else if (val == "3k以下") {
         console.log("3k以下");
-        this.salaryCode = "y_2";
+        this.salaryCode = "y_1";
       } else if (val == "3k-5k") {
         console.log("3k-5k");
-        this.salaryCode = "y_3";
+        this.salaryCode = "y_2";
       } else if (val == "5k-10k") {
         console.log("5k-10k");
-        this.salaryCode = "y_4";
+        this.salaryCode = "y_3";
       } else if (val == "10k-15k") {
         console.log("10k-15k");
+        this.salaryCode = "y_4";
+      } else if (val == "15k-20k") {
+        console.log("15k-20k");
         this.salaryCode = "y_5";
-      } else if (val == "15k-30k") {
-        console.log("15k-30k");
+      } else if (val == "20k-30k") {
+        console.log("20k-30k");
         this.salaryCode = "y_6";
       } else if (val == "30k-50k") {
         console.log("30k-50k");
@@ -524,19 +527,21 @@ export default {
       axios.get('http://localhost:3000/?spiderUrl=' + this.finalWebsite)
         .then(res => {
           console.log('后端传回数据成功:')
-          console.log(res.data)
+          /* console.log(res.data.jobsArray) */
           this.jobsinfo = res.data.jobsArray
           if(this.jobsinfo.length !== 0){
             EventBus.$emit("searchingresult", {
               jobsinfo: this.jobsinfo,
-              dataAvailable: true
+              /* dataAvailable: true,
+              datarefresh: true */
             });
-          } else {
+          }/*  else {
             EventBus.$emit("searchingresult", {
               jobsinfo: this.jobsinfo,
-              dataAvailable: false
+              dataAvailable: false,
+              datarefresh: false
             });
-          }
+          } */
         })
     }
   },

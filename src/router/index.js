@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Vue from 'vue'
 import Router from 'vue-router'
 import register from '../components/register/register'
@@ -22,8 +23,8 @@ export default new Router({
           path: '/bestrecommend',
           name: 'bestrecommend',
           component: bestrecommend
-        },
-        {
+        }
+        /* {
           path: '/hotrecommend',
           name: 'hotrecommend',
           component: hotrecommend
@@ -32,7 +33,7 @@ export default new Router({
           path: '/lastestrecommend',
           name: 'lastestrecommend',
           component: lastestrecommend
-        }
+        } */
       ]
     },
     {

@@ -36,11 +36,11 @@
               </el-tag>
             </div>
           </el-col>
-<!--           <el-col :span="6">
+          <!--           <el-col :span="6">
 							<div class="grid-content bg-purple-dark">
 								 <el-tag type="warning" size="mini">忘记密码？</el-tag>
 							</div>
-          </el-col> -->
+          </el-col>-->
         </el-row>
       </el-main>
       <el-footer></el-footer>
@@ -48,73 +48,79 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import axios from 'axios';
-import { EventBus } from "../eventBus/EventBus.js"
+import axios from "axios";
+import { EventBus } from "../eventBus/EventBus.js";
 export default {
   data() {
     return {
-      telephone: '',
-      password:''
+      telephone: "",
+      password: ""
     };
   },
   methods: {
     loginSuccess() {
       this.$notify.success({
-        title: '提示',
-        message: '恭喜，登录成功！',
+        title: "提示",
+        message: "恭喜，登录成功！",
         showClose: true
       });
+      this.$router.push({ path: '/bestrecommend' })
     },
     loginFail() {
       this.$notify.error({
-        title: '错误',
-        message: '登录失败'
+        title: "错误",
+        message: "登录失败"
       });
     },
-		userLogin(){
-      if(this.telephone === '' || this.password === ''){
-        this.open()
-      }else{
-        axios.get('http://localhost:3000/users/login/', {
-          params: {
+    userLogin() {
+      if (this.telephone === "" || this.password === "") {
+        this.open();
+      } else {
+        axios
+          .get("http://localhost:3000/users/login/", {
+            params: {
               telephone: this.telephone,
               password: this.password
-          }
-          }).then(res => {
-              console.log('数据获取成功')
-              console.log(res.data)
-              console.log('登录用户的用户名：')
-              console.log(res.data[0].username)
-              console.log('登录用户的手机号：')
-              console.log(res.data[0].telephone)
-              /* console.log('res.data.length: ' + res.data.length) */
-              if(res.data.length === 1){ // 登录成功
-                this.loginSuccess()
-                EventBus.$emit("loginsucceed", {
-                  username: res.data[0].username,
-                  telephone: res.data[0].telephone,
-                  status: 1
-                });
-              } else {
-                this.loginFail()
-              }
-          }).catch(function(error){
-            console.log(error)
+            }
           })
+          .then(res => {
+            console.log("数据获取成功");
+            console.log(res.data);
+            console.log("登录用户的用户名[login]：");
+            console.log(res.data[0].username);
+            console.log("登录用户的手机号[login]：");
+            console.log(res.data[0].telephone);
+            /* console.log('res.data.length: ' + res.data.length) */
+            if (res.data.length === 1) {
+              // 登录成功
+              this.loginSuccess();
+              // 向全局总线提交当前登录系统并正在使用的用户信息
+              EventBus.$emit("loginsucceed", {
+                username: res.data[0].username,
+                telephone: res.data[0].telephone,
+                status: 1
+              });
+            } else {
+              this.loginFail();
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     open() {
-        this.$alert('请同时输入手机号和密码！', '登录失败', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            });
-          }
-        });
-      }
-  },
+      this.$alert("请同时输入手机号和密码！", "登录失败", {
+        confirmButtonText: "确定",
+        callback: action => {
+          this.$message({
+            type: "info",
+            message: `action: ${action}`
+          });
+        }
+      });
+    }
+  }
 };
 </script>
 
@@ -123,9 +129,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
-.login{
+
+.login {
   margin-top: 20px;
 }
+
 .el-main {
   display: flex;
   flex-direction: column;
@@ -158,9 +166,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 20px;
     width: 100%;
   }
-	.noaccount{
-		display flex
-		justify-content flex-end
-	}
+
+  .noaccount {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

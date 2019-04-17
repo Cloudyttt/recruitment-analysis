@@ -27,7 +27,7 @@ router.get('/register', function (req, res, next) {
   let email = req.query.email
   let username = req.query.username
   let password = req.query.password
-  let status = req.query.telephone
+  let status = 0
 
   let q1 = `select * from user where telephone = '${telephone}'`
   let q2 = `insert into user (telephone, email, username, password, status) values ('${telephone}','${email}','${username}','${password}','${status}')`
@@ -157,7 +157,10 @@ router.get('/login', function (req, res, next) {
 
   // 查询数据库
   var sql = `select * from user where telephone = '${telephone}' and password = '${password}'`
+  var sql2 = `update user set status = 1 where telephone = '${telephone}'`
+
   console.log('sql语句：' + sql)
+  console.log('sql更新status语句：' + sql2)
   connection.query(sql, function (err, result) {
     if (err) {
       console.log('[SELECT ERROR]---:', err.message)
@@ -166,6 +169,16 @@ router.get('/login', function (req, res, next) {
       console.log('Login succeed!')
       console.log(result[0])
       res.send(result)
+      // 更新用户登录状态status
+      connection.query(sql2, function (err, result) {
+        if (err) {
+          console.log('[SELECT ERROR]---:', err.message)
+          return
+        } /* else {
+          console.log(result[0].status)
+          console.log('status update succeed!')
+        } */
+      })
     } else {
       console.log('Login fail!')
       console.log(result.length)
@@ -174,12 +187,70 @@ router.get('/login', function (req, res, next) {
   })
 
   // 断开连接
-  connection.end(function (err) {
+  /* connection.end(function (err) {
     if (err) {
       console.log('[UNCONNECT ERROR]---:' + err)
       return
     }
     console.log('unconnect succeed!')
+  }) */
+})
+/***************************************************************用户登出接口****************************************************************/
+router.get('/loginout', function (req, res, next) {
+  console.log('前端请求登出')
+  // 数据库连接
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '12345678',
+    database: 'mydb',
+    port: '3306'
+  })
+  function handleError (err) {
+    if (err) {
+      if (err.code === 'PROTOCOL_CONNECTION_LOST') { // 如果是连接断开，自动重新连接
+        connect()
+      } else if (err.code === 'PROTOCOL_ENQUEUE_HANDSHAKE_TWICE') { // 已经连接数据库时断开重连
+        connection.end(function (err) {
+          if (err) {
+            console.log('---:' + err)
+            return
+          }
+          console.log('关闭succeed')
+        })
+      } else {
+        console.error(err.stack || err)
+      }
+    } else {
+      console.log('connecting succeed!')
+    }
+  }
+  
+  // 连接数据库
+  function connect () {
+    db = connection
+    db.connect(handleError)
+    db.on('error', handleError)
+  }
+  var db
+  connect()
+
+  /* console.log(req.query.telephone)
+  console.log(req.query.password) */
+  let telephone = req.query.telephone
+
+  // 查询数据库
+  var sql = `update user set status = 0 where telephone = '${telephone}'`
+  console.log('sql更新status语句：' + sql)
+  connection.query(sql, function (err, result) {
+    if (err) {
+      console.log('[SELECT ERROR]---:', err.message)
+      return
+    } else {
+      console.log(result)
+      res.send(result)
+      console.log('status update succeed!')
+    }
   })
 })
 /***************************************************************账号修改接口****************************************************************/

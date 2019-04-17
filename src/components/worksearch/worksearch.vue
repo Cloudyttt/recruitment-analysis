@@ -4,7 +4,7 @@
       <el-header id="worksearch-header">
         <el-row>
           <el-col :span="4" id="jobs-num">
-            <el-tag>职位 {{jobsNum}} 个</el-tag>
+            <el-tag>搜索岗位</el-tag>
           </el-col>
         </el-row>
       </el-header>

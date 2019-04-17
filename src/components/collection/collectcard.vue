@@ -5,8 +5,9 @@
         <el-container>
           <el-header class="card-header">
             <div class="companytitle">
-              {{jobinfo.job.jobTitle }}
+              {{jobinfo.jobtitle }}
               <!-- 作为收藏按钮 -->
+              &nbsp;
               <el-button
                 v-if="condition"
                 icon="el-icon-star-off"
@@ -23,12 +24,12 @@
                 @click="uncollect"
               ></el-button>
             </div>
-            <span class="salarytitle">{{jobinfo.job.jobsalary}}</span>
-            <!-- <div>收藏数: <strong class="collect">5</strong></div> -->
+            <span class="salarytitle">{{jobinfo.salary}}</span>
           </el-header>
-          <el-main class="card-main">{{jobinfo.job.jobExp }} / {{ jobinfo.job.jobEdu}}</el-main>
-          <el-footer class="card-footer">
-            <!-- {{jobinfo.job.jobDetail}} -->
+          <el-main class="card-main">{{jobinfo.exp }} / {{ jobinfo.edu}}</el-main>
+          <el-footer class="card-footer"><!-- 收藏数 -->
+            <span class="salarytitle"><strong>收藏数：{{jobinfo.count}}</strong></span>
+            <a :href="jobinfo.joburl">查看详情</a>
           </el-footer>
         </el-container>
       </div>
@@ -42,11 +43,11 @@
         </div>
         <div class="camp-detail">
           <div class="camp-detail-name">
-            {{jobinfo.company.companyTitle }}
+            {{jobinfo.companytitle }}
             <!-- 评分 -->
             <!-- <el-rate v-model="value1" show-score text-color="#ff9900" score-template="{value}"></el-rate> -->
           </div>
-          <div>{{jobinfo.company.companyField}} / {{jobinfo.company.companyFinancialStage}} / {{jobinfo.job.jobLocation}}</div>
+          <div>{{jobinfo.field}} / {{jobinfo.financingstage}} / {{jobinfo.location}}</div>
         </div>
       </div>
     </el-card>
@@ -55,91 +56,53 @@
 <script type="text/ecmascript-6">
 import { EventBus } from "../eventBus/EventBus.js";
 import { error } from "util";
-import { constants } from "crypto";
-const axios = require("axios");
-const cheerio = require("cheerio");
+import { constants } from 'crypto';
+const axios = require('axios')
+const cheerio = require('cheerio')
 export default {
   data() {
     return {
+      conditionTotle:false,
       dataAvailable: false /* 是否有数据 */,
-      condition: true /* 控制收藏按钮的显示与否 */,
+      condition: false /* 控制收藏按钮的显示与否 */,
       value1: null,
       colletioncount: 0,
-
+      
       /* 岗位信息 */
       job: {
-        jobTitle: "",
-        jobSalary: "",
-        jobExp: "",
-        jobEdu: "",
-        jobUrl: "",
-        jobDetail: "",
-        jobLocation: ""
+        jobTitle: "123",
+        jobSalary: "123",
+        jobExp: "123",
+        jobEdu: "123",
+        jobUrl: "123",
+        jobDetail: "123",
+        jobLocation: "123"
       },
 
       /* 公司信息 */
       company: {
-        companyTitle: "",
-        companyField: "",
-        companyFinancialStage: "",
-        companyLocation: "",
-        companySize: "",
-        companyUrl: "",
-        companyDetail: ""
+        companyTitle: "123",
+        companyField: "123",
+        companyFinancialStage: "123",
+        companyLocation: "123",
+        companySize: "123",
+        companyUrl: "123",
+        companyDetail: "123"
       }
     };
   },
   props: {
     jobinfo: Object,
-    telephone: String,
-    status: Number
+    /* telephone: String,
+    status: Number */
   },
   methods: {
     collect() {
-      /* if(status === 1){ */
-      console.log("telephone in jobcard:" + this.telephone);
-      console.log("status in jobcard:" + this.status);
       this.condition = false;
-      console.log("收藏");
-      this.job.jobTitle = this.jobinfo.job.jobTitle;
-      this.job.jobSalary = this.jobinfo.job.jobsalary;
-      this.job.jobExp = this.jobinfo.job.jobExp;
-      this.job.jobEdu = this.jobinfo.job.jobEdu;
-      this.job.jobLocation = this.jobinfo.job.jobLocation;
-      this.job.jobUrl = this.jobinfo.job.joburl;
-      this.job.jobDetail = this.jobinfo.job.jobDetail;
-
-      /* 公司信息 */
-      this.company.companyTitle = this.jobinfo.company.companyTitle;
-      this.company.companyField = this.jobinfo.company.companyField;
-      this.company.companyFinancialStage = this.jobinfo.company.companyFinancialStage;
-      this.company.companyLocation = this.jobinfo.company.jobLocation;
-      this.company.companySize = this.jobinfo.company.companySize;
-      this.company.companyUrl = this.jobinfo.company.companyUrl;
-      this.company.companyDetail = this.jobinfo.company.companyDetail;
-
-      /* 请求后端将收藏的岗位数据存入数据库 */
-      axios
-        .get("http://localhost:3000/collect", {
-          params: {
-            telephone: this.telephone,
-            job: this.job,
-            company: this.company
-          }
-        })
-        .then(res => {
-          console.log("后端传回数据成功:");
-          console.log(res.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      /* } */
     },
     uncollect() {
-      this.condition = true
-      var jobTitle = this.jobinfo.job.jobTitle;
-      var companyTitle = this.jobinfo.company.companyTitle;
+      var jobTitle = this.jobinfo.jobtitle;
+      var companyTitle = this.jobinfo.companytitle;
       /* 请求后端将收藏的岗位数据存入数据库 */
       axios
         .get("http://localhost:3000/uncollect", {
@@ -151,11 +114,15 @@ export default {
         .then(res => {
           console.log("后端传回数据成功:");
           console.log(res.data);
+          EventBus.$emit("refreshcollection", {
+              refresh: true
+            });
         })
         .catch(function(error) {
           console.log(error);
         });
     }
+
   },
   mounted() {
     EventBus.$on("searchingresult", ({ dataAvailable, datarefresh }) => {
@@ -165,7 +132,7 @@ export default {
         this.condition = true;
       }
     });
-    /* EventBus.$on("loginsucceed", ({ username, telephone, status}) => {
+    EventBus.$on("loginsucceed", ({ username, telephone, status}) => {
       this.telephone = telephone
       this.status = status
       console.log('status in jobcard: ' + status)
@@ -174,7 +141,11 @@ export default {
       this.telephone = telephone
       this.status = status
       console.log('status in jobcard: ' + status)
-    }); */
+    });
+  },
+  created(){
+    /* console.log('666:')
+    console.log(this.jobinfo) */
   }
 };
 </script>
@@ -189,6 +160,7 @@ export default {
 
 .salarytitle {
   color: red;
+  font-size 14px
 }
 
 .card-header {
@@ -212,7 +184,7 @@ export default {
 
 .card-footer {
   margin: 0 !important;
-  padding: 0 20px !important;
+  padding: 0 0 !important;
   height: 30px !important;
   line-height: 30px;
   display: flex;

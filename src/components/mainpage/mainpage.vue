@@ -21,26 +21,25 @@
             <el-header id="app-footer-header">
               <el-menu
                 :default-active="activeIndex1"
-                class="el-menu-demo"
                 mode="horizontal"
                 @select="handleSelect"
                 background-color="#fafafa"
                 router
               >
                 <el-menu-item index="/bestrecommend" route="/bestrecommend">推荐职位</el-menu-item>
-                <el-menu-item index="/hotrecommend" route="/hotrecommend">热门职位</el-menu-item>
-                <el-menu-item index="/lastestrecommend" route="/lastestrecommend">最新职位</el-menu-item>
+                <!-- <el-menu-item index="/hotrecommend" route="/hotrecommend">热门职位</el-menu-item>
+                <el-menu-item index="/lastestrecommend" route="/lastestrecommend">最新职位</el-menu-item> -->
               </el-menu>
               <router-view></router-view>
             </el-header>
             <el-main>
-              <div class="block">
+              <!-- <div class="block">
                 <span class="demonstration">页数较少时的效果</span>
                 <el-pagination
                   layout="prev, pager, next"
                   :total="50">
                 </el-pagination>
-              </div>
+              </div> -->
             </el-main>
           </el-container>
         </el-footer>

@@ -97,7 +97,7 @@ export default {
               email: this.email,
               username: this.username,
               password: this.password,
-              status: this.status
+              /* status: this.status */
             }
           })
           .then(res => {
@@ -146,6 +146,7 @@ export default {
           message: '账号注册成功！',
           type: 'success'
         });
+        this.$router.push({ path: '/login' })
       },
       open4() {
         this.$alert('账号已存在，请勿重复注册', '注册失败', {
@@ -157,6 +158,7 @@ export default {
             });
           }
         });
+        this.$router.push({ path: '/login' })
       }
   }
 };

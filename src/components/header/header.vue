@@ -9,7 +9,7 @@
       </router-link>
       <div id="header-location">
         <strong id="header-location-current">
-          <router-link to="/mainpage">杭州站</router-link>
+          <router-link to="/bestrecommend">杭州站</router-link>
         </strong>
       </div>
     </div>
@@ -60,6 +60,7 @@ import Register from "../register/register";
 import Login from "../login/login";
 import { EventBus } from "../eventBus/EventBus.js";
 import { constants } from "crypto";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -83,26 +84,61 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    loginout() {
-      console.log("Login out");
-      EventBus.$emit("loginout", {
-        status: 0
+    loginSuccess() {
+      this.$notify.success({
+        title: "提示",
+        message: "恭喜，登出成功！",
+        showClose: true
       });
-    }
+    },
+    loginoutFail() {
+      this.$notify.error({
+        title: "错误",
+        message: "登出失败"
+      });
+    },
+    loginout() {
+      axios
+        .get("http://localhost:3000/users/loginout/", {
+          params: {
+            telephone: this.telephone
+          }
+        })
+        .then(res => {
+          console.log("数据获取成功");
+          console.log(res.data);
+          if (res.data.changedRows === 1) {
+            // 登出成功
+            this.loginSuccess();
+            // 向全局总线提交当前登录系统并正在使用的用户信息
+            EventBus.$emit("loginoutsucceed", {
+              username: this.username,
+              telephone: this.telephone,
+              status: 0
+            });
+          } else {
+            this.loginoutFail();
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     EventBus.$on("loginsucceed", ({ username, telephone, status }) => {
-      console.log(username);
+      /* console.log(username);
       console.log(telephone);
-      console.log(status);
+      console.log(status); */
       if (status === 1) {
         this.isLogined = true;
         this.username = username;
-        console.log("用户名：");
-        console.log(username);
+        this.telephone = telephone;
+        console.log('手机号 in header：' + this.telephone)
+        console.log('用户名 in header：' + this.username);
       }
     });
-    EventBus.$on("loginout", ({ status }) => {
+    EventBus.$on("loginoutsucceed", ({ status }) => {
       console.log(status);
       if (status === 0) {
         this.isLogined = false;
