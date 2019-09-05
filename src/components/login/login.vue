@@ -36,11 +36,6 @@
               </el-tag>
             </div>
           </el-col>
-          <!--           <el-col :span="6">
-							<div class="grid-content bg-purple-dark">
-								 <el-tag type="warning" size="mini">忘记密码？</el-tag>
-							</div>
-          </el-col>-->
         </el-row>
       </el-main>
       <el-footer></el-footer>
